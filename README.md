@@ -74,14 +74,54 @@ bash setup.sh
 
 Output files are saved to the current directory (or use `--output` to specify a path).
 
+For interactive apps, prefer the two-stage workflow: `--stage geometry` writes the OBJ, a quick geometry GLB, and `<output>.trellis_state.pt`. The user can inspect the OBJ first, then `--stage texture` reads that saved state to bake `<output>_baked.glb` without rerunning the TRELLIS generation model.
+
+## Desktop App
+
+This repository includes a lightweight SwiftUI shell for macOS:
+
+```bash
+bash build-mac-app.sh
+open dist/TrellisMac.app
+```
+
+To create a shareable disk image:
+
+```bash
+bash build-mac-app.sh
+bash scripts/package-dmg.sh
+bash scripts/verify-release.sh
+```
+
+The DMG contains only `TrellisMac.app` as the application payload. It does not bundle Python dependencies, model weights, or generated outputs. The redistributable backend source included inside the app is staged at build time by `scripts/stage-backend-resources.sh`; the generated `mac-app/Resources/Backend/` directory is not tracked in git.
+
+On first launch the app installs that bundled backend into `~/Library/Application Support/TrellisMac/Backend`, so end users do not need to clone this repository just to try the DMG. The first-run flow is:
+
+1. Open `TrellisMac.app`.
+2. Click the first-run actions to install the managed backend, run `setup.sh`, request Hugging Face model access, and log in.
+3. Wait for the app-managed backend to download Python dependencies, clone `TRELLIS.2`, and apply the Apple Silicon patches.
+4. Pick an input image and start generation.
+
+If you are developing from source instead of using the DMG, you can still point the app at a local checkout of this repository.
+
+By default the local DMG is ad hoc signed for development/source users, so macOS Gatekeeper may warn on first open. See `docs/RELEASE.md` for Developer ID signing and notarization.
+
+<img src="screenshots/trellis-layout-first-pass.png" width="720" alt="TrellisMac desktop app">
 ## Usage
 
 ```bash
 # Basic usage
 python generate.py photo.png
 
+# Two-stage workflow: generate geometry first, bake textures later
+python generate.py photo.png --stage geometry --output my_model
+python generate.py --stage texture --state my_model.trellis_state.pt --output my_model --texture-size 512
+
 # With options
 python generate.py photo.png --seed 123 --output my_model --pipeline-type 512
+
+# Check whether this install will use Metal or KDTree texture baking
+python generate.py --check-backends
 
 # All options
 python generate.py --help
@@ -94,6 +134,11 @@ python generate.py --help
 | `--pipeline-type` | `512` | Pipeline resolution: `512`, `1024`, `1024_cascade` |
 | `--texture-size` | `1024` | PBR texture resolution: `512`, `1024`, `2048` |
 | `--no-texture` | — | Skip texture baking, export geometry only |
+| `--stage` | `full` | `full`, `geometry`, or `texture` for two-stage exports |
+| `--state` | `<output>.trellis_state.pt` | Saved intermediate state for `--stage texture` |
+| `--bake-faces` | `100000` | Approximate face count used only for GLB texture baking |
+| `--simplify-target-faces` | `0` | Optional face count for geometry-only OBJ/GLB exports |
+| `--check-backends` | — | Print Metal/KDTree backend diagnostics without loading the model |
 
 ## What Was Ported
 

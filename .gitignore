@@ -11,3 +11,14 @@ stubs/
 progress-assets/
 PROGRESS.md
 deps/
+/dist/
+*.dmg
+*.dmg.sha256
+*.xcarchive/
+/dmg-staging
+/dmg-staging/
+/release-notes.md
+/.trae/
+/mac-app/Resources/Backend/
+/baseline-results/
+/.cache/

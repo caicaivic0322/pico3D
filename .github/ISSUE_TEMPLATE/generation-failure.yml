@@ -1,0 +1,45 @@
+name: Generation failure
+description: Report geometry, bake, or output quality problems.
+title: "[generation] "
+labels:
+  - generation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please include the exact command or in-app settings so the run can be reproduced.
+  - type: input
+    id: app_version
+    attributes:
+      label: App or commit version
+      placeholder: v0.1.0 or commit SHA
+    validations:
+      required: true
+  - type: input
+    id: input_type
+    attributes:
+      label: Input image details
+      placeholder: car photo, single object on plain background, 1254x1254 PNG
+    validations:
+      required: true
+  - type: textarea
+    id: settings
+    attributes:
+      label: Run settings
+      description: Include pipeline, seed, stage, texture size, and bake/simplify face counts.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What went wrong?
+      description: Describe whether the issue is a failure, a crash, fragmentation, or visible mesh artifacts.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      render: shell
+    validations:
+      required: true

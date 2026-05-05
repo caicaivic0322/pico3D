@@ -1,0 +1,49 @@
+name: Setup failure
+description: Report first-run, environment install, or Hugging Face setup problems.
+title: "[setup] "
+labels:
+  - setup
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a setup problem. Please include the exact failing step and the relevant log output.
+  - type: input
+    id: app_version
+    attributes:
+      label: App or commit version
+      placeholder: v0.1.0 or commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: install_mode
+    attributes:
+      label: Install mode
+      options:
+        - DMG app
+        - Source checkout
+        - Both
+    validations:
+      required: true
+  - type: input
+    id: macos_version
+    attributes:
+      label: macOS version and Mac model
+      placeholder: macOS 15.4 on M4 Pro
+    validations:
+      required: true
+  - type: textarea
+    id: failing_step
+    attributes:
+      label: Which step failed?
+      description: Describe whether the failure happened during backend install, setup.sh, Hugging Face login, or backend check.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste the in-app log or terminal output.
+      render: shell
+    validations:
+      required: true

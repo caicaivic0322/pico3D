@@ -1,0 +1,42 @@
+name: Release packaging bug
+description: Report DMG, signing, bundle layout, or release asset problems.
+title: "[release] "
+labels:
+  - release
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for GitHub release packaging issues such as broken DMGs, missing bundled backend files, or signing and verification problems.
+  - type: input
+    id: app_version
+    attributes:
+      label: Release version
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: distribution_type
+    attributes:
+      label: Distribution type
+      options:
+        - ad-hoc DMG
+        - Developer ID signed DMG
+        - Source build
+    validations:
+      required: true
+  - type: textarea
+    id: symptom
+    attributes:
+      label: What is broken?
+      description: Describe the problem with packaging, mounting, signing, verification, or first launch.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification output
+      description: Paste output from build, package, verify, or Gatekeeper checks.
+      render: shell
+    validations:
+      required: true
