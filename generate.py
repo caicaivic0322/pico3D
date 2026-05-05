@@ -4,6 +4,17 @@ Generate a 3D mesh from a single image using TRELLIS.2 on Apple Silicon.
 
 import sys
 import os
+import importlib
+import traceback
+
+_default_flex_gemm_cache_path = os.path.join(
+    os.path.dirname(__file__),
+    ".cache",
+    "flex_gemm",
+    "autotune_cache.json",
+)
+os.environ.setdefault("FLEX_GEMM_AUTOTUNE_CACHE_PATH", _default_flex_gemm_cache_path)
+os.makedirs(os.path.dirname(os.environ["FLEX_GEMM_AUTOTUNE_CACHE_PATH"]), exist_ok=True)
 
 # Set up backends before any TRELLIS imports. Use setdefault so the caller
 # can override from the environment. Default conv backend is flex_gemm since
