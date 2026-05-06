@@ -1,5 +1,7 @@
 # TRELLIS.2 for Apple Silicon
 
+English | [简体中文](README.zh-CN.md)
+
 Run [TRELLIS.2](https://github.com/microsoft/TRELLIS) image-to-3D generation natively on Mac.
 
 This is a port of Microsoft's TRELLIS.2 — a state-of-the-art image-to-3D model — from CUDA-only to Apple Silicon via PyTorch MPS. No NVIDIA GPU required.
@@ -32,8 +34,8 @@ Output is a GLB with base-color, metallic, and roughness textures — ready for 
 
 ```bash
 # Clone this repo
-git clone https://github.com/shivampkumar/trellis-mac.git
-cd trellis-mac
+git clone https://github.com/caicaivic0322/pico3D.git
+cd pico3D
 
 # (Recommended) Download the Xcode Metal Toolchain so setup can build the
 # Metal-accelerated texture baker. Without this, setup falls back to a pure
